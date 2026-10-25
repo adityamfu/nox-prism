@@ -1,0 +1,24 @@
+name: NoxPrism
+options:
+  bundleIdPrefix: com.aditya
+  deploymentTarget:
+    macOS: "14.0" # VNGenerateForegroundInstanceMaskRequest is macOS 14+ (SDK header), not 13
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    CODE_SIGN_IDENTITY: "-" # sign to run locally, no paid team needed
+    CODE_SIGN_STYLE: Manual
+    ENABLE_HARDENED_RUNTIME: NO
+    GENERATE_INFOPLIST_FILE: YES
+targets:
+  NoxPrism:
+    type: application
+    platform: macOS
+    sources: [NoxPrism]
+    settings:
+      base:
+        INFOPLIST_KEY_CFBundleDisplayName: Nox Prism
+        PRODUCT_BUNDLE_IDENTIFIER: com.aditya.noxprism
+        INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.utilities
+        MARKETING_VERSION: "0.1"
+        CURRENT_PROJECT_VERSION: 1
