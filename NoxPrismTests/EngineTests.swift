@@ -74,6 +74,23 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(try pixelSize(wide), [50, 25])
     }
 
+    // MARK: Queue
+
+    @MainActor
+    func testJobQueueExpandsFoldersAndRuns() async throws {
+        let input = try makeJPEG(width: 8, height: 8)
+        try Data().write(to: dir.appendingPathComponent("notes.txt"))
+        let queue = JobQueue(options: ImageOptions(format: .png), accepts: ImageSection.accepts)
+        queue.add([dir, input]) // folder + duplicate file
+        XCTAssertEqual(queue.items.map(\.url.lastPathComponent), ["src.jpg"])
+
+        let options = queue.options
+        queue.run { input, dir, _ in try await ImageEngine.convert(input, to: dir, options: options) }
+        while queue.isRunning { try await Task.sleep(for: .milliseconds(20)) }
+        guard case .done(let output) = queue.items[0].status else { return XCTFail("\(queue.items[0].status)") }
+        XCTAssertEqual(output.lastPathComponent, "src.png")
+    }
+
     // MARK: Video
 
     func testVideo() async throws {
