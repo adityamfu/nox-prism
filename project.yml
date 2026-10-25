@@ -22,3 +22,11 @@ targets:
         INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.utilities
         MARKETING_VERSION: "0.1"
         CURRENT_PROJECT_VERSION: 1
+    scheme:
+      testTargets: [NoxPrismTests]
+  NoxPrismTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources: [NoxPrismTests]
+    dependencies:
+      - target: NoxPrism
